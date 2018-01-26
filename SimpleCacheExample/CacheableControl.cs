@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SimpleCacheExample
 {
@@ -17,14 +18,14 @@ namespace SimpleCacheExample
             this.policy = policy;
         }
 
-        public Cacheable Get(string key)
+        public async Task<Cacheable> Get(string key)
         {
             if (cacheables.Any(a => a.Key == key && !a.Value.IsExpired()))
             {
                 return cacheables.FirstOrDefault(f => f.Key == key).Value.Cacheable;
             }
 
-            var cacheable = factory.Create();
+            var cacheable = await factory.Create();
             var cacheStruct = new CacheStruct(cacheable, policy);
             cacheables.AddOrUpdate(key, cacheStruct, (k, oldValue) => oldValue = cacheStruct);
 

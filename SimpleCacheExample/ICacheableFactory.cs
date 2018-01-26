@@ -1,7 +1,9 @@
-﻿namespace SimpleCacheExample
+﻿using System.Threading.Tasks;
+
+namespace SimpleCacheExample
 {
     public interface ICacheableFactory
     {
-        Cacheable Create();
+        Task<Cacheable> Create();
     }
 }

@@ -1,10 +1,12 @@
-﻿namespace SimpleCacheExample.Test
+﻿using System.Threading.Tasks;
+
+namespace SimpleCacheExample.Test
 {
     public class CacheableFactoryStub : ICacheableFactory
     {
-        public Cacheable Create()
+        public async Task<Cacheable> Create()
         {
-            return new Cacheable();
+            return await Task.FromResult(new Cacheable());
         }
     }
 }

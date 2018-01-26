@@ -7,33 +7,33 @@ namespace SimpleCacheExample.Test
     public class CacheableControlTests
     {
         [Fact]
-        public void CreateValidCacheable()
+        public async Task CreateValidCacheable()
         {
             var control = new CacheableControl(new CacheableFactoryStub(), new CacheableExpirePolicyStub(TimeSpan.FromDays(1).TotalSeconds));
 
-            var cacheable = control.Get("abc");
+            var cacheable = await control.Get("abc");
             Assert.NotNull(cacheable);
 
         }
 
         [Fact]
-        public void RequestForSameKeyGettingSameObject()
+        public async Task RequestForSameKeyGettingSameObject()
         {
             var control = new CacheableControl(new CacheableFactoryStub(), new CacheableExpirePolicyStub(TimeSpan.FromDays(1).TotalSeconds));
 
-            var expected = control.Get("abc");
-            var actual = control.Get("abc");
-
+            var expected = await control.Get("abc");
+            var actual = await control.Get("abc");
+            
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void RequestForDifferentKeysGettingDifferentObjects()
+        public async Task RequestForDifferentKeysGettingDifferentObjects()
         {
             var control = new CacheableControl(new CacheableFactoryStub(), new CacheableExpirePolicyStub(TimeSpan.FromDays(1).TotalSeconds));
 
-            var expected = control.Get("abc");
-            var actual = control.Get("xyz");
+            var expected = await control.Get("abc");
+            var actual = await control.Get("xyz");
 
             Assert.NotEqual(expected, actual);
         }
@@ -44,9 +44,9 @@ namespace SimpleCacheExample.Test
         {
             var control = new CacheableControl(new CacheableFactoryStub(), new CacheableExpirePolicyStub(1));
 
-            var expected = control.Get("abc");
+            var expected = await control.Get("abc");
             await Task.Delay(2000);
-            var actual = control.Get("abc");
+            var actual = await control.Get("abc");
 
             Assert.NotEqual(expected, actual);
         }
