@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SimpleCacheExample
 {
     public class CacheableControl
     {
         readonly ICacheableFactory factory;
+        readonly IDictionary<string,Cacheable> cacheables = new ConcurrentDictionary<string,Cacheable>();
 
         public CacheableControl(ICacheableFactory factory)
         {
@@ -13,7 +17,13 @@ namespace SimpleCacheExample
 
         public Cacheable Get(string key)
         {
-            return factory.Create();
+            if (cacheables.ContainsKey(key))
+                return cacheables.FirstOrDefault(f => f.Key == key).Value;
+
+            var cacheable = factory.Create();
+            cacheables.Add(key, cacheable);
+
+            return cacheable;
         }
     }
 }
