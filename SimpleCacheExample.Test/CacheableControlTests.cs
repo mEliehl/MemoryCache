@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace SimpleCacheExample.Test
 {
@@ -51,10 +53,48 @@ namespace SimpleCacheExample.Test
             Assert.NotEqual(expected, actual);
         }
 
+        //I Know Test should be fast
         [Fact]
-        public async Task RequestFromMultipleReaders()
+        public void RequestFromMultipleReaders()
         {
-           
+            var control = new CacheableControl(new CacheableFactoryStub(), new CacheableExpirePolicyStub(1));
+            Random r = new Random();
+            
+            Parallel.For(1, 20000, async a =>
+            {
+                var reader = new Reader(control);
+                await reader.Read();
+            });
         }
+    }
+
+    class Reader
+    {
+        readonly CacheableControl Control;
+        public Reader(CacheableControl Control)
+        {
+            this.Control = Control;
+        }
+
+        public async Task Read()
+        {
+            try
+            {
+                var a = this.Control.Get("a");
+                var b = this.Control.Get("b");
+                var c = this.Control.Get("c");
+                var d = this.Control.Get("d");
+                var e = this.Control.Get("e");
+                var f = this.Control.Get("f");
+
+                await Task.WhenAll(a, b, c, d, e, f);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
