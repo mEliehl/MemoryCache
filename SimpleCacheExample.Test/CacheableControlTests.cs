@@ -50,5 +50,11 @@ namespace SimpleCacheExample.Test
 
             Assert.NotEqual(expected, actual);
         }
+
+        [Fact]
+        public async Task RequestFromMultipleReaders()
+        {
+           
+        }
     }
 }

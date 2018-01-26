@@ -1,7 +1,9 @@
-﻿namespace SimpleCacheExample
+﻿using System;
+
+namespace SimpleCacheExample
 {
     public interface ICacheableExpirePolicy
     {
-        bool IsExpired();
+        DateTimeOffset GetExpirationDate();
     }
 }

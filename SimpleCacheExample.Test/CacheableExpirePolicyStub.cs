@@ -7,15 +7,16 @@ namespace SimpleCacheExample.Test
     public class CacheableExpirePolicyStub : ICacheableExpirePolicy
     {
         public DateTimeOffset ExpiresIn { get; private set; }
+        readonly double seconds;
 
         public CacheableExpirePolicyStub(double seconds)
         {
-            ExpiresIn = DateTimeOffset.UtcNow.AddSeconds(seconds);
+            this.seconds = seconds;
         }
 
-        public bool IsExpired()
+        public DateTimeOffset GetExpirationDate()
         {
-            return DateTimeOffset.UtcNow > ExpiresIn;
+            return DateTimeOffset.UtcNow.AddSeconds(seconds);
         }
     }
 }

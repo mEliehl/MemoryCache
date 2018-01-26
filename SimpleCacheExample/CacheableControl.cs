@@ -26,7 +26,7 @@ namespace SimpleCacheExample
             }
 
             var cacheable = await factory.Create();
-            var cacheStruct = new CacheStruct(cacheable, policy);
+            var cacheStruct = new CacheStruct(cacheable, policy.GetExpirationDate());
             cacheables.AddOrUpdate(key, cacheStruct, (k, oldValue) => oldValue = cacheStruct);
 
             return cacheable;
@@ -35,21 +35,20 @@ namespace SimpleCacheExample
 
     struct CacheStruct
     {
-        public CacheStruct(Cacheable Cacheable, ICacheableExpirePolicy policy)
-        {
-            this.Cacheable = Cacheable;
-            this.policy = policy;
-        }
+        
 
         public Cacheable Cacheable { get; private set; }
-        readonly ICacheableExpirePolicy policy;
+        readonly DateTimeOffset ExpirationDate;
+
+        public CacheStruct(Cacheable cacheable, DateTimeOffset expirationDate) : this()
+        {
+            Cacheable = cacheable;
+            ExpirationDate = expirationDate;
+        }
 
         public bool IsExpired()
         {
-            return policy.IsExpired();
+            return DateTime.UtcNow > ExpirationDate.UtcDateTime;
         }
-
-
-
     }
 }
