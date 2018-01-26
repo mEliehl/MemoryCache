@@ -13,7 +13,7 @@ namespace SimpleCacheExample
 
         public Cacheable Get(string key)
         {
-            throw new NotImplementedException();
+            return factory.Create();
         }
     }
 }

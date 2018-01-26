@@ -5,8 +5,12 @@ namespace SimpleCacheExample.Test
     public class CacheableControlTests
     {
         [Fact]
-        public void Test1()
+        public void CreateValidCacheable()
         {
+            var control = new CacheableControl(new CacheableFactoryStub());
+
+            var cacheable = control.Get("abc");
+            Assert.NotNull(cacheable);
 
         }
     }
