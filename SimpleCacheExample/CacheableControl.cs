@@ -21,9 +21,7 @@ namespace SimpleCacheExample
         public async Task<Cacheable> Get(string key)
         {
             if (cacheables.Any(a => a.Key == key && !a.Value.IsExpired()))
-            {
                 return cacheables.FirstOrDefault(f => f.Key == key).Value.Cacheable;
-            }
 
             var cacheable = await factory.Create();
             var cacheStruct = new CacheStruct(cacheable, policy.GetExpirationDate());

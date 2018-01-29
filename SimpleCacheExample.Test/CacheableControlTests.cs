@@ -65,6 +65,8 @@ namespace SimpleCacheExample.Test
                 var reader = new Reader(control);
                 await reader.Read();
             });
+
+            Assert.True(true);
         }
     }
 
