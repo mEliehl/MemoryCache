@@ -1,2 +1,2 @@
 # MemoryCache
-A small example of memory cache implementation
+A small example of a memory cache implementation
